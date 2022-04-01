@@ -236,7 +236,7 @@ def velo(self, data=None, **kwargs):
     {p}
     {t}
     """
-    kwargs = self._preprocess(**kwargs)  # pylint: disable=protected-access
+    self._activate_figure()  # pylint: disable=protected-access
 
     if "S" not in kwargs or ("S" in kwargs and not isinstance(kwargs["S"], str)):
         raise GMTInvalidInput("Spec is a required argument and has to be a string.")

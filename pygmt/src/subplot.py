@@ -147,7 +147,7 @@ def subplot(self, nrows=1, ncols=1, **kwargs):
     {V}
     {XY}
     """
-    kwargs = self._preprocess(**kwargs)  # pylint: disable=protected-access
+    self._activate_figure()  # pylint: disable=protected-access
 
     if nrows < 1 or ncols < 1:
         raise GMTInvalidInput("Please ensure that both 'nrows'>=1 and 'ncols'>=1.")
@@ -217,7 +217,7 @@ def set_panel(self, panel=None, **kwargs):
 
     {V}
     """
-    kwargs = self._preprocess(**kwargs)  # pylint: disable=protected-access
+    self._activate_figure()  # pylint: disable=protected-access
     # convert tuple or list to comma-separated str
     panel = ",".join(map(str, panel)) if is_nonstr_iter(panel) else panel
 

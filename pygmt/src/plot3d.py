@@ -183,7 +183,7 @@ def plot3d(
     {w}
     """
     # pylint: disable=too-many-locals
-    kwargs = self._preprocess(**kwargs)  # pylint: disable=protected-access
+    self._activate_figure()  # pylint: disable=protected-access
 
     kind = data_kind(data, x, y, z)
 

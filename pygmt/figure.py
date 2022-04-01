@@ -220,7 +220,7 @@ class Figure:
             ``prefix`` parameter.
         {V}
         """
-        kwargs = self._preprocess(**kwargs)
+        self._activate_figure()
         # Default cropping the figure to True
         if "A" not in kwargs:
             kwargs["A"] = ""

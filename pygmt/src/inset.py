@@ -124,7 +124,7 @@ def inset(self, **kwargs):
     >>> fig.show()  # doctest: +SKIP
     <IPython.core.display.Image object>
     """
-    kwargs = self._preprocess(**kwargs)  # pylint: disable=protected-access
+    self._activate_figure()  # pylint: disable=protected-access
     with Session() as lib:
         try:
             lib.call_module("inset", f"begin {build_arg_string(kwargs)}")

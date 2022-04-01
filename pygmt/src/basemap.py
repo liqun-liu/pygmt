@@ -75,7 +75,7 @@ def basemap(self, **kwargs):
     {p}
     {t}
     """
-    kwargs = self._preprocess(**kwargs)  # pylint: disable=protected-access
+    self._activate_figure()  # pylint: disable=protected-access
     if not args_in_kwargs(args=["B", "L", "Td", "Tm", "c"], kwargs=kwargs):
         raise GMTInvalidInput(
             "At least one of frame, map_scale, compass, rose, or panel must be specified."

@@ -121,7 +121,7 @@ def grdview(self, grid, **kwargs):
     {p}
     {t}
     """
-    kwargs = self._preprocess(**kwargs)  # pylint: disable=protected-access
+    self._activate_figure()  # pylint: disable=protected-access
     with Session() as lib:
         file_context = lib.virtualfile_from_data(check_kind="raster", data=grid)
 

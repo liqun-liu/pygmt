@@ -104,7 +104,7 @@ def wiggle(self, data=None, x=None, y=None, z=None, **kwargs):
     {t}
     {w}
     """
-    kwargs = self._preprocess(**kwargs)  # pylint: disable=protected-access
+    self._activate_figure()  # pylint: disable=protected-access
 
     with Session() as lib:
         # Choose how data will be passed in to the module

@@ -202,7 +202,7 @@ def rose(self, data=None, length=None, azimuth=None, **kwargs):
     {w}
     """
 
-    kwargs = self._preprocess(**kwargs)  # pylint: disable=protected-access
+    self._activate_figure()  # pylint: disable=protected-access
 
     with Session() as lib:
         # Choose how data will be passed into the module

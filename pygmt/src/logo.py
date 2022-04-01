@@ -59,6 +59,6 @@ def logo(self, **kwargs):
     {c}
     {t}
     """
-    kwargs = self._preprocess(**kwargs)  # pylint: disable=protected-access
+    self._activate_figure()  # pylint: disable=protected-access
     with Session() as lib:
         lib.call_module("logo", build_arg_string(kwargs))

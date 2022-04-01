@@ -144,7 +144,7 @@ def histogram(self, data, **kwargs):
     {t}
     {w}
     """
-    kwargs = self._preprocess(**kwargs)  # pylint: disable=protected-access
+    self._activate_figure()  # pylint: disable=protected-access
     with Session() as lib:
         file_context = lib.virtualfile_from_data(check_kind="vector", data=data)
         with file_context as infile:
