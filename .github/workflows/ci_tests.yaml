@@ -37,7 +37,7 @@ jobs:
         exclude:
           - os: macOS-latest
             isDraft: true
-          - os: windows-latest
+          - os: ubuntu-latest
             isDraft: true
         # Pair Python 3.8 with NumPy 1.21 and Python 3.10 with NumPy 1.23
         # Only install optional packages on Python 3.10/NumPy 1.23
