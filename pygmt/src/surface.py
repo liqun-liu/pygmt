@@ -36,15 +36,15 @@ def surface(data=None, x=None, y=None, z=None, **kwargs):
     r"""
     Grids table data using adjustable tension continuous curvature splines.
 
-    Surface reads randomly-spaced (x,y,z) triples and produces gridded values
-    z(x,y) by solving:
+    Surface reads randomly-spaced (x, y, z) triplets and produces gridded
+    values z(x,y) by solving:
 
     .. math::    (1 - t)\nabla^2(z)+t\nabla(z) = 0
 
     where :math:`t` is a tension factor between 0 and 1, and :math:`\nabla`
     indicates the Laplacian operator.
 
-    Takes a matrix, xyz triples, or a file name as input.
+    Takes a matrix, (x, y, z) triplets, or a file name as input.
 
     Must provide either ``data`` or ``x``, ``y``, and ``z``.
 
@@ -56,29 +56,29 @@ def surface(data=None, x=None, y=None, z=None, **kwargs):
     ----------
     data : str or {table-like}
         Pass in (x, y, z) or (longitude, latitude, elevation) values by
-        providing a file name to an ASCII data table, a 2D
+        providing a file name to an ASCII data table, a 2-D
         {table-classes}.
-    x/y/z : 1d arrays
+    x/y/z : 1-D arrays
         Arrays of x and y coordinates and values z of the data points.
 
-    {I}
+    {spacing}
 
-    {R}
+    {region}
 
     outgrid : str
         Optional. The file name for the output netcdf file with extension .nc
         to store the grid in.
 
-    {V}
-    {a}
-    {b}
-    {d}
-    {e}
-    {f}
-    {h}
-    {i}
-    {r}
-    {w}
+    {verbose}
+    {aspatial}
+    {binary}
+    {nodata}
+    {find}
+    {coltypes}
+    {header}
+    {incols}
+    {registration}
+    {wrap}
 
     Returns
     -------
