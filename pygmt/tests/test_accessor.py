@@ -95,7 +95,7 @@ def test_accessor_sliced_datacube():
         with xr.open_dataset(fname) as dataset:
             grid = dataset.sel(level=500, month=1, drop=True).z
 
-        #assert grid.gmt.registration == 0  # gridline registration
+        assert grid.gmt.registration == 0  # gridline registration
         #assert grid.gmt.gtype == 1  # geographic coordinate type
     finally:
         os.remove(fname)
