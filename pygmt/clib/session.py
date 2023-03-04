@@ -1479,6 +1479,31 @@ class Session:
 
         return file_context
 
+    def read_virtualfile(self, vfname):
+        c_read_virtualfile = self.get_libgmt_func(
+            "GMT_Read_VirtualFile",
+            argtypes=[
+                ctp.c_void_p,
+                ctp.c_char_p,
+            ],
+            restype=ctp.c_void_p,
+        )
+        return c_read_virtualfile(self.session_pointer, vfname.encode())
+
+    @contextmanager
+    def grid_from_virtualfile(self, grid):
+        family = "GMT_IS_GRID"
+        geometry = "GMT_IS_SURFACE"
+        with self.open_virtual_file(family, geometry, "GMT_IN", grid) as vfile:
+            yield vfile
+
+    @contextmanager
+    def grid_to_virtualfile(self):
+        family = "GMT_IS_GRID"
+        geometry = "GMT_IS_SURFACE"
+        with self.open_virtual_file(family, geometry, "GMT_OUT", None) as vfile:
+            yield vfile
+
     def extract_region(self):
         """
         Extract the WESN bounding box of the currently active figure.

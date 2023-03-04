@@ -2,7 +2,10 @@
 grdcut - Extract subregion from a grid.
 """
 
+import ctypes as ctp
+
 from pygmt.clib import Session
+from pygmt.datatypes import GMT_GRID
 from pygmt.helpers import (
     GMTTempFile,
     build_arg_string,
@@ -17,7 +20,6 @@ __doctest_skip__ = ["grdcut"]
 
 @fmt_docstring
 @use_alias(
-    G="outgrid",
     R="region",
     J="projection",
     N="extend",
@@ -27,7 +29,7 @@ __doctest_skip__ = ["grdcut"]
     f="coltypes",
 )
 @kwargs_to_strings(R="sequence")
-def grdcut(grid, **kwargs):
+def grdcut(grid, outgrid=None, **kwargs):
     r"""
     Extract subregion from a grid.
 
@@ -102,6 +104,7 @@ def grdcut(grid, **kwargs):
     >>> # and a y-range of 21 to 24
     >>> new_grid = pygmt.grdcut(grid=grid, region=[12, 15, 21, 24])
     """
+    """
     with GMTTempFile(suffix=".nc") as tmpfile:
         with Session() as lib:
             file_context = lib.virtualfile_from_data(check_kind="raster", data=grid)
@@ -113,3 +116,19 @@ def grdcut(grid, **kwargs):
                 )
 
         return load_dataarray(outgrid) if outgrid == tmpfile.name else None
+    """
+    with Session() as lib:
+        with lib.virtualfile_from_data(
+            check_kind="raster", data=grid
+        ) as infile, lib.grid_to_virtualfile() as outfile:
+            kwargs["G"] = f"{outfile}"
+            lib.call_module(
+                module="grdcut", args=build_arg_string(kwargs, infile=infile)
+            )
+            gmtgrid = lib.read_virtualfile(outfile)
+
+        with lib.grid_from_virtualfile(gmtgrid) as infile:
+            if outgrid is not None:
+                lib.call_module("write", f"{infile} {outgrid} -Tg")
+            else:
+                return ctp.cast(gmtgrid, ctp.POINTER(GMT_GRID)).contents.to_dataarray()
