@@ -104,19 +104,6 @@ def grdcut(grid, outgrid=None, **kwargs):
     >>> # and a y-range of 21 to 24
     >>> new_grid = pygmt.grdcut(grid=grid, region=[12, 15, 21, 24])
     """
-    """
-    with GMTTempFile(suffix=".nc") as tmpfile:
-        with Session() as lib:
-            file_context = lib.virtualfile_from_data(check_kind="raster", data=grid)
-            with file_context as infile:
-                if (outgrid := kwargs.get("G")) is None:
-                    kwargs["G"] = outgrid = tmpfile.name  # output to tmpfile
-                lib.call_module(
-                    module="grdcut", args=build_arg_string(kwargs, infile=infile)
-                )
-
-        return load_dataarray(outgrid) if outgrid == tmpfile.name else None
-    """
     with Session() as lib:
         with lib.virtualfile_from_data(
             check_kind="raster", data=grid
