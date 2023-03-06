@@ -74,6 +74,75 @@ class GMT_GRID_HEADER(ctp.Structure):
 class GMT_GRID(ctp.Structure):
     """
     Structure for GMT grid.
+
+    Examples
+    --------
+
+    Here is an example showing how to access the data and metadata in a GMT_GRID object.
+
+    >>> with Session() as lib:
+    ...     # create a virtual file for output
+    ...     with lib.grid_to_virtualfile() as vfile:
+    ...         # read in a grid file and output to the virtual file
+    ...         lib.call_module("read", f"@static_earth_relief.nc {vfile} -Tg")
+    ...         # read the data in the virtual file and cast the data into a pointer to GMT_GRID
+    ...         grid_pointer = ctp.cast(
+    ...             lib.read_virtualfile(vfile), ctp.POINTER(GMT_GRID)
+    ...         )
+    ...         # get the contents of the grid and header
+    ...         grid = grid_pointer.contents  # a GMT_GRID object
+    ...         header = grid.header.contents  # a GMT_GRID_HEADER object
+    ...         # access the header properties
+    ...         print(header.n_rows, header.n_columns, header.registration)
+    ...         print(
+    ...             header.wesn[:], header.z_min, header.z_max, header.inc[:]
+    ...         )
+    ...         print(header.z_scale_factor, header.z_add_offset)
+    ...         print(header.x_units, header.y_units, header.z_units)
+    ...         print(header.title)
+    ...         print(header.command)
+    ...         print(header.remark)
+    ...         print(header.nm, header.type, header.n_bands)
+    ...         print(header.mx, header.my)
+    ...         print(header.pad[:])
+    ...         print(header.mem_layout, header.nan_value, header.xy_off)
+    ...         # access the x, y arrays
+    ...         print(grid.x[: header.n_columns])
+    ...         print(grid.y[: header.n_rows])
+    ...         # access the data array (with paddings)
+    ...         pad = header.pad[:]
+    ...         data = np.reshape(
+    ...             grid.data[: header.mx * header.my], (header.my, header.mx)
+    ...         )[pad[2] : header.my - pad[3], pad[0] : header.mx - pad[1]]
+    ...         print(data)
+    ...
+    14 8 1
+    [-55.0, -47.0, -24.0, -10.0] 190.0 981.0 [1.0, 1.0]
+    1.0 0.0
+    b'longitude [degrees_east]' b'latitude [degrees_north]' b'elevation (m)'
+    b'Produced by grdcut'
+    b'grdcut @earth_relief_01d_p -R-55/-47/-24/-10 -Gstatic_earth_relief.nc'
+    b'Reduced by Gaussian Cartesian filtering (111.2 km fullwidth) from SRTM15_V2.3.nc [Sandwell et al., 2022; https://doi.org/10.1029/2021EA002069]'
+    112 18 1
+    12 18
+    [2, 2, 2, 2]
+    b'' nan 0.5
+    [-54.5, -53.5, -52.5, -51.5, -50.5, -49.5, -48.5, -47.5]
+    [-10.5, -11.5, -12.5, -13.5, -14.5, -15.5, -16.5, -17.5, -18.5, -19.5, -20.5, -21.5, -22.5, -23.5]
+    [[347.5 331.5 309.  282.  190.  208.  299.5 348. ]
+    [349.  313.  325.5 247.  191.  225.  260.  452.5]
+    [345.5 320.  335.  292.  207.5 247.  325.  346.5]
+    [450.5 395.5 366.  248.  250.  354.5 550.  797.5]
+    [494.5 488.5 357.  254.5 286.  484.5 653.5 930. ]
+    [601.  526.5 535.  299.  398.5 645.  797.5 964. ]
+    [308.  595.5 555.5 556.  580.  770.  927.  920. ]
+    [521.5 682.5 796.  886.  571.5 638.5 739.5 881.5]
+    [310.  521.5 757.  570.5 538.5 524.  686.5 794. ]
+    [561.5 539.  446.5 481.5 439.5 553.  726.5 981. ]
+    [557.  435.  385.5 345.5 413.5 496.  519.5 833.5]
+    [373.  367.5 349.  352.5 419.5 428.  570.  667.5]
+    [383.  284.5 344.5 394.  491.  556.5 578.5 618.5]
+    [347.5 344.5 386.  640.5 617.  579.  646.5 671. ]]
     """
 
     _fields_ = [
