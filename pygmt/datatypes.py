@@ -9,7 +9,7 @@ import numpy as np
 import xarray as xr
 from pygmt.clib.session import Session
 
-# Lenghts of grid header variables
+# Lengths of grid header variables
 with Session() as lib:
     GMT_GRID_UNIT_LEN80 = lib["GMT_GRID_UNIT_LEN80"]
     GMT_GRID_TITLE_LEN80 = lib["GMT_GRID_TITLE_LEN80"]

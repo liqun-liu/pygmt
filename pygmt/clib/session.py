@@ -1515,7 +1515,7 @@ class Session:
         Yields
         ------
         vfile : str
-            The name of virtual file.
+            Name of the virtual file.
         """
         family = "GMT_IS_GRID"
         geometry = "GMT_IS_SURFACE"
@@ -1525,12 +1525,12 @@ class Session:
     @contextmanager
     def grid_to_virtualfile(self):
         """
-        Create a virtual file for a output grid.
+        Create a virtual file for an output grid.
 
         Yields
         ------
         vfile : str
-            The name of virtual file.
+            Name of the virtual file.
         """
         family = "GMT_IS_GRID"
         geometry = "GMT_IS_SURFACE"
