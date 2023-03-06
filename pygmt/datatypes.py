@@ -122,13 +122,13 @@ class GMT_GRID(ctp.Structure):
     b'longitude [degrees_east]' b'latitude [degrees_north]' b'elevation (m)'
     b'Produced by grdcut'
     b'grdcut @earth_relief_01d_p -R-55/-47/-24/-10 -Gstatic_earth_relief.nc'
-    b'Reduced by Gaussian Cartesian filtering (111.2 km fullwidth) from SRTM15_V2.3.nc [Sandwell et al., 2022; https://doi.org/10.1029/2021EA002069]'
+    b'Reduced by Gaussian Cartesian filtering (111.2 km fullwidth) from ...'
     112 18 1
     12 18
     [2, 2, 2, 2]
     b'' nan 0.5
     [-54.5, -53.5, -52.5, -51.5, -50.5, -49.5, -48.5, -47.5]
-    [-10.5, -11.5, -12.5, -13.5, -14.5, -15.5, -16.5, -17.5, -18.5, -19.5, -20.5, -21.5, -22.5, -23.5]
+    [-10.5, -11.5, -12.5, -13.5, -14.5, -15.5, ..., -22.5, -23.5]
     [[347.5 331.5 309.  282.  190.  208.  299.5 348. ]
     [349.  313.  325.5 247.  191.  225.  260.  452.5]
     [345.5 320.  335.  292.  207.5 247.  325.  346.5]

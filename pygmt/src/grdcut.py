@@ -6,14 +6,7 @@ import ctypes as ctp
 
 from pygmt.clib import Session
 from pygmt.datatypes import GMT_GRID
-from pygmt.helpers import (
-    GMTTempFile,
-    build_arg_string,
-    fmt_docstring,
-    kwargs_to_strings,
-    use_alias,
-)
-from pygmt.io import load_dataarray
+from pygmt.helpers import build_arg_string, fmt_docstring, kwargs_to_strings, use_alias
 
 __doctest_skip__ = ["grdcut"]
 
@@ -117,5 +110,5 @@ def grdcut(grid, outgrid=None, **kwargs):
         if outgrid is not None:
             with lib.grid_from_virtualfile(gmtgrid) as infile:
                 lib.call_module("write", f"{infile} {outgrid} -Tg")
-        else:
-            return ctp.cast(gmtgrid, ctp.POINTER(GMT_GRID)).contents.to_dataarray()
+            return None
+        return ctp.cast(gmtgrid, ctp.POINTER(GMT_GRID)).contents.to_dataarray()
