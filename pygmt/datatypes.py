@@ -85,6 +85,9 @@ class GMT_GRID(ctp.Structure):
     ]
 
     def to_dataarray(self):
+        """
+        Convert a GMT_GRID object to a xarray.DataArray object.
+        """
         header = self.header.contents
         pad = header.pad[:]
         x = self.x[: header.n_columns]

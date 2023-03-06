@@ -1480,6 +1480,18 @@ class Session:
         return file_context
 
     def read_virtualfile(self, vfname):
+        """
+        Read data from a virtual file.
+
+        Parameters
+        ----------
+        vfname : str
+            Name of the virtual file to read.
+
+        Returns
+        -------
+        Pointer to the data, which can be casted into GMT data types.
+        """
         c_read_virtualfile = self.get_libgmt_func(
             "GMT_Read_VirtualFile",
             argtypes=[
@@ -1492,6 +1504,19 @@ class Session:
 
     @contextmanager
     def grid_from_virtualfile(self, grid):
+        """
+        Create a virtual file for an input grid.
+
+        Parameter
+        ---------
+        grid :
+            Pointer to the grid.
+
+        Yields
+        ------
+        vfile : str
+            The name of virtual file.
+        """
         family = "GMT_IS_GRID"
         geometry = "GMT_IS_SURFACE"
         with self.open_virtual_file(family, geometry, "GMT_IN", grid) as vfile:
@@ -1499,6 +1524,14 @@ class Session:
 
     @contextmanager
     def grid_to_virtualfile(self):
+        """
+        Create a virtual file for a output grid.
+
+        Yields
+        ------
+        vfile : str
+            The name of virtual file.
+        """
         family = "GMT_IS_GRID"
         geometry = "GMT_IS_SURFACE"
         with self.open_virtual_file(family, geometry, "GMT_OUT", None) as vfile:
