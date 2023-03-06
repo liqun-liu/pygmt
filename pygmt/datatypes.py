@@ -101,4 +101,6 @@ class GMT_GRID(ctp.Structure):
         if y[0] > y[1]:
             y = list(reversed(y))
             data = np.flipud(data)
-        return xr.DataArray(data, coords=[y, x], dims=["lat", "lon"])
+        grid = xr.DataArray(data, coords=[y, x], dims=["lat", "lon"])
+        grid.gmt.registration = header.registration
+        return grid
