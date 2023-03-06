@@ -104,4 +104,13 @@ class GMT_GRID(ctp.Structure):
         grid = xr.DataArray(data, coords=[y, x], dims=["lat", "lon"])
         grid.name = "z"
         grid.gmt.registration = header.registration
+        # Determine the gtype property based on x and y units.
+        # This is a temporary workaround and may not work for all cases.
+        if (
+            header.x_units == b"longitude [degrees_east]"
+            and header.y_units == b"latitude [degrees_north]"
+        ):
+            grid.gmt.gtype = 1
+        else:
+            grid.gmt.gtype = 0
         return grid
