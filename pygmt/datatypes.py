@@ -102,5 +102,6 @@ class GMT_GRID(ctp.Structure):
             y = list(reversed(y))
             data = np.flipud(data)
         grid = xr.DataArray(data, coords=[y, x], dims=["lat", "lon"])
+        grid.name = "z"
         grid.gmt.registration = header.registration
         return grid
