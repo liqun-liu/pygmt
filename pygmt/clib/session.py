@@ -1510,14 +1510,14 @@ class Session:
         return c_read_virtualfile(self.session_pointer, vfname.encode())
 
     @contextmanager
-    def grid_from_virtualfile(self, grid):
+    def virtualfile_from_gmtgrid(self, grid_pointer):
         """
-        Create a virtual file for an input grid.
+        Create a virtual file for reading a GMT_GRID object.
 
         Parameter
         ---------
-        grid :
-            Pointer to the grid.
+        grid_pointer : ctp.POINTER(GMT_GRID)
+            Pointer to a GMT_GRID object.
 
         Yields
         ------
@@ -1526,13 +1526,13 @@ class Session:
         """
         family = "GMT_IS_GRID"
         geometry = "GMT_IS_SURFACE"
-        with self.open_virtual_file(family, geometry, "GMT_IN", grid) as vfile:
+        with self.open_virtual_file(family, geometry, "GMT_IN", grid_pointer) as vfile:
             yield vfile
 
     @contextmanager
-    def grid_to_virtualfile(self):
+    def virtualfile_to_gmtgrid(self):
         """
-        Create a virtual file for an output grid.
+        Create a virtual file for writing a GMT_GRID object.
 
         Yields
         ------
