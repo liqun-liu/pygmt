@@ -301,6 +301,22 @@ class Session:
             function.restype = restype
         return function
 
+    def set_allocmode(self, family, obj):
+        """
+        Set allocation mode of object to external.
+        """
+        c_set_allocmode = self.get_libgmt_func(
+            "GMT_Set_AllocMode",
+            argtypes=[ctp.c_void_p, ctp.c_uint, ctp.c_void_p],
+            restype=ctp.c_void_p,
+        )
+        family_int = self._parse_constant(family, valid=FAMILIES, valid_modifiers=VIAS)
+        status = c_set_allocmode(self.session_pointer, family_int, obj)
+        if status:
+            raise GMTCLibError(
+                f"Failed to set allocation mode of object to external:\n{self._error_message}"
+            )
+
     def create(self, name):
         """
         Create a new GMT C API session.
