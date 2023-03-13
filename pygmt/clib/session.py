@@ -1458,7 +1458,8 @@ class Session:
         _virtualfile_from = {
             "file": dummy_context,
             "geojson": tempfile_from_geojson,
-            "grid": self.virtualfile_from_grid,
+            # "grid": self.virtualfile_from_grid,
+            "grid": self.virtualfile_from_xrgrid,
             # Note: virtualfile_from_matrix is not used because a matrix can be
             # converted to vectors instead, and using vectors allows for better
             # handling of string type inputs (e.g. for datetime data types)
@@ -1565,15 +1566,44 @@ class Session:
         """
         Create a virtual file from an xarray.DataArray object.
         """
+
+        def _add_pad(x):
+            return np.r_[
+                np.zeros((2, x.shape[1] + 4)),
+                np.c_[np.zeros((x.shape[0], 2)), x, np.zeros((x.shape[0], 2))],
+                np.zeros((2, x.shape[1] + 4)),
+            ]
+
         from pygmt.datatypes import GMT_GRID
 
         family = "GMT_IS_GRID"
         geometry = "GMT_IS_SURFACE"
-        dims = xrgrid.shape[::-1]
-        data = self.create_data(family, geometry, "GMT_CONTAINER_ONLY", dim=dims, pad=0)
+        matrix, region, inc = dataarray_to_matrix(xrgrid)
+
+        _gtype = {0: "GMT_GRID_IS_CARTESIAN", 1: "GMT_GRID_IS_GEO"}[xrgrid.gmt.gtype]
+        _reg = {0: "GMT_GRID_NODE_REG", 1: "GMT_GRID_PIXEL_REG"}[
+            xrgrid.gmt.registration
+        ]
+
+        data = self.create_data(
+            family,
+            geometry,
+            mode=f"GMT_CONTAINER_ONLY|{_gtype}",
+            ranges=region,
+            inc=inc,
+            registration=_reg,
+            pad=0,
+        )
         self.set_allocmode(family, data)  # No longer needed after GMT>=6.5.0
         gmtgrid = ctp.cast(data, ctp.POINTER(GMT_GRID))
-        gmtgrid.contents.data = xrgrid.data.ctypes.data_as(ctp.POINTER(ctp.c_float))
+        gmtgrid.contents.data = matrix.ctypes.data_as(ctp.POINTER(ctp.c_float))
+        gmtgrid.contents.x = xrgrid.coords[xrgrid.dims[1]].values.ctypes.data_as(
+            ctp.POINTER(ctp.c_double)
+        )
+        gmtgrid.contents.y = xrgrid.coords[xrgrid.dims[0]].values.ctypes.data_as(
+            ctp.POINTER(ctp.c_double)
+        )
+
         with self.open_virtual_file(family, geometry, "GMT_IN", gmtgrid) as vfile:
             yield vfile
 
