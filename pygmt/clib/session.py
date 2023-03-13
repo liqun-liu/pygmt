@@ -1560,6 +1560,23 @@ class Session:
         with self.open_virtual_file(family, geometry, "GMT_OUT", None) as vfile:
             yield vfile
 
+    @contextmanager
+    def virtualfile_from_xrgrid(self, xrgrid):
+        """
+        Create a virtual file from an xarray.DataArray object.
+        """
+        from pygmt.datatypes import GMT_GRID
+
+        family = "GMT_IS_GRID"
+        geometry = "GMT_IS_SURFACE"
+        dims = xrgrid.shape[::-1]
+        data = self.create_data(family, geometry, "GMT_CONTAINER_ONLY", dim=dims, pad=0)
+        self.set_allocmode(family, data)  # No longer needed after GMT>=6.5.0
+        gmtgrid = ctp.cast(data, ctp.POINTER(GMT_GRID))
+        gmtgrid.contents.data = xrgrid.data.ctypes.data_as(ctp.POINTER(ctp.c_float))
+        with self.open_virtual_file(family, geometry, "GMT_IN", gmtgrid) as vfile:
+            yield vfile
+
     def extract_region(self):
         """
         Extract the WESN bounding box of the currently active figure.
