@@ -66,9 +66,9 @@ jobs:
         run: |
           mamba install gmt=${{ matrix.gmt_version }} numpy \
                         pandas xarray netCDF4 packaging \
-                        contextily geopandas ipython rioxarray \
+                        contextily geopandas ipython rioxarray sphinx-gallery \
                         build dvc make 'pytest>=6.0' \
-                        pytest-cov pytest-doctestplus pytest-mpl sphinx-gallery
+                        pytest-cov pytest-doctestplus pytest-mpl
 
       # Show installed pkg information for postmortem diagnostic
       - name: List installed packages

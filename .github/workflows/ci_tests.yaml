@@ -47,7 +47,8 @@ jobs:
             optional-packages: ''
           - python-version: '3.11'
             numpy-version: '1.24'
-            optional-packages: 'contextily geopandas ipython rioxarray'
+            optional-packages: 'contextily geopandas ipython rioxarray sphinx-gallery'
+
     timeout-minutes: 30
     defaults:
       run:
@@ -94,7 +95,7 @@ jobs:
                         pandas xarray netCDF4 packaging \
                         ${{ matrix.optional-packages }} \
                         build dvc make 'pytest>=6.0' \
-                        pytest-cov pytest-doctestplus pytest-mpl sphinx-gallery
+                        pytest-cov pytest-doctestplus pytest-mpl
 
       # Show installed pkg information for postmortem diagnostic
       - name: List installed packages
