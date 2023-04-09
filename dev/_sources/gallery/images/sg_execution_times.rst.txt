@@ -6,20 +6,20 @@
 
 Computation times
 =================
-**00:20.827** total execution time for **gallery_images** files:
+**00:18.234** total execution time for **gallery_images** files:
 
 +------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_images_grdgradient_shading.py` (``grdgradient_shading.py``) | 00:10.787 | 0.0 MB |
+| :ref:`sphx_glr_gallery_images_grdgradient_shading.py` (``grdgradient_shading.py``) | 00:09.045 | 0.0 MB |
 +------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_images_grdclip.py` (``grdclip.py``)                         | 00:05.170 | 0.0 MB |
+| :ref:`sphx_glr_gallery_images_grdclip.py` (``grdclip.py``)                         | 00:04.427 | 0.0 MB |
 +------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_images_grdgradient.py` (``grdgradient.py``)                 | 00:01.469 | 0.0 MB |
+| :ref:`sphx_glr_gallery_images_grdgradient.py` (``grdgradient.py``)                 | 00:01.432 | 0.0 MB |
 +------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_images_track_sampling.py` (``track_sampling.py``)           | 00:01.186 | 0.0 MB |
+| :ref:`sphx_glr_gallery_images_track_sampling.py` (``track_sampling.py``)           | 00:01.140 | 0.0 MB |
 +------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_images_image.py` (``image.py``)                             | 00:00.846 | 0.0 MB |
+| :ref:`sphx_glr_gallery_images_image.py` (``image.py``)                             | 00:00.864 | 0.0 MB |
 +------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_images_grdlandmask.py` (``grdlandmask.py``)                 | 00:00.821 | 0.0 MB |
+| :ref:`sphx_glr_gallery_images_grdlandmask.py` (``grdlandmask.py``)                 | 00:00.803 | 0.0 MB |
 +------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_images_contours.py` (``contours.py``)                       | 00:00.547 | 0.0 MB |
+| :ref:`sphx_glr_gallery_images_contours.py` (``contours.py``)                       | 00:00.523 | 0.0 MB |
 +------------------------------------------------------------------------------------+-----------+--------+

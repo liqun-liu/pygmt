@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>pygmt.datasets.earth_free_air_anomaly &mdash; PyGMT</title>
+        <title>pygmt.src.shift_origin &mdash; PyGMT</title>
     
 
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -18,7 +18,7 @@
       <link rel="stylesheet" href="../../../_static/sg_gallery-rendered-html.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.png"/>
-    <link rel="canonical" href="https://pygmt.org/dev/_modules/pygmt/datasets/earth_free_air_anomaly.html" />
+    <link rel="canonical" href="https://pygmt.org/dev/_modules/pygmt/src/shift_origin.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -143,7 +143,7 @@
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
           <li class="breadcrumb-item"><a href="../../pygmt.html">pygmt</a></li>
-      <li class="breadcrumb-item active">pygmt.datasets.earth_free_air_anomaly</li>
+      <li class="breadcrumb-item active">pygmt.src.shift_origin</li>
     <li class="source-link">
         
     </li>
@@ -154,98 +154,47 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pygmt.datasets.earth_free_air_anomaly</h1><div class="highlight"><pre>
+  <h1>Source code for pygmt.src.shift_origin</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Function to download the IGPP Global Earth Free-Air Anomaly datasets from the</span>
-<span class="sd">GMT data server, and load as :class:`xarray.DataArray`.</span>
-
-<span class="sd">The grids are available in various resolutions.</span>
+<span class="sd">shift_origin - Shift plot origin in x and/or y directions.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">pygmt.datasets.load_remote_dataset</span> <span class="kn">import</span> <span class="n">_load_remote_dataset</span>
-<span class="kn">from</span> <span class="nn">pygmt.helpers</span> <span class="kn">import</span> <span class="n">kwargs_to_strings</span>
 
-<span class="n">__doctest_skip__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;load_earth_free_air_anomaly&quot;</span><span class="p">]</span>
+<span class="kn">from</span> <span class="nn">pygmt.clib</span> <span class="kn">import</span> <span class="n">Session</span>
 
 
-<div class="viewcode-block" id="load_earth_free_air_anomaly"><a class="viewcode-back" href="../../../api/generated/pygmt.datasets.load_earth_free_air_anomaly.html#pygmt.datasets.load_earth_free_air_anomaly">[docs]</a><span class="nd">@kwargs_to_strings</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="s2">&quot;sequence&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">load_earth_free_air_anomaly</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s2">&quot;01d&quot;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">registration</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Load an Earth Free-Air Anomaly grid in various resolutions.</span>
+<span class="k">def</span> <span class="nf">shift_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xshift</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yshift</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shift plot origin in x and/or y directions.</span>
 
-<span class="sd">    The grids are downloaded to a user data directory</span>
-<span class="sd">    (usually ``~/.gmt/server/earth/earth_faa/``) the first time you invoke</span>
-<span class="sd">    this function. Afterwards, it will load the grid from the data directory.</span>
-<span class="sd">    So you&#39;ll need an internet connection the first time around.</span>
+<span class="sd">    This method shifts the plot origin relative to the current origin</span>
+<span class="sd">    by (*xshift*, *yshift*). Optionally, append the length unit (**c**,</span>
+<span class="sd">    **i**, or **p**). Default unit if not given is **c** for centimeters.</span>
 
-<span class="sd">    These grids can also be accessed by passing in the file name</span>
-<span class="sd">    **@earth_faa**\_\ *res*\[_\ *reg*] to any grid plotting/processing</span>
-<span class="sd">    function. *res* is the grid resolution (see below), and *reg* is grid</span>
-<span class="sd">    registration type (**p** for pixel registration or **g** for gridline</span>
-<span class="sd">    registration).</span>
+<span class="sd">    Prepend **a** to shift the origin back to the original position after</span>
+<span class="sd">    plotting, prepend **c** to center the plot on the center of the paper</span>
+<span class="sd">    (optionally add shift), prepend **f** to shift the origin relative to</span>
+<span class="sd">    the fixed lower left corner of the page, or prepend **r** [Default] to</span>
+<span class="sd">    move the origin relative to its current location.</span>
 
-<span class="sd">    Refer to :gmt-datasets:`earth-faa.html` for more details.</span>
+<span class="sd">    Detailed usage at</span>
+<span class="sd">    :gmt-docs:`cookbook/options.html#plot-positioning-and-layout-the-x-y-options`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    resolution : str</span>
-<span class="sd">        The grid resolution. The suffix ``d`` and ``m`` stand for</span>
-<span class="sd">        arc-degrees and arc-minutes. It can be ``&quot;01d&quot;``, ``&quot;30m&quot;``,</span>
-<span class="sd">        ``&quot;20m&quot;``, ``&quot;15m&quot;``, ``&quot;10m&quot;``, ``&quot;06m&quot;``, ``&quot;05m&quot;``, ``&quot;04m&quot;``,</span>
-<span class="sd">        ``&quot;03m&quot;``, ``&quot;02m&quot;``, or ``&quot;01m&quot;``.</span>
-
-<span class="sd">    region : str or list</span>
-<span class="sd">        The subregion of the grid to load, in the form of a list</span>
-<span class="sd">        [*xmin*, *xmax*, *ymin*, *ymax*] or a string *xmin/xmax/ymin/ymax*.</span>
-<span class="sd">        Required for grids with resolutions higher than 5</span>
-<span class="sd">        arc-minutes (i.e., ``&quot;05m&quot;``).</span>
-
-<span class="sd">    registration : str</span>
-<span class="sd">        Grid registration type. Either ``&quot;pixel&quot;`` for pixel registration or</span>
-<span class="sd">        ``&quot;gridline&quot;`` for gridline registration. Default is ``&quot;gridline&quot;``</span>
-<span class="sd">        for all resolutions except ``&quot;01m&quot;`` which is ``&quot;pixel&quot;`` only.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    grid : :class:`xarray.DataArray`</span>
-<span class="sd">        The Earth free-air anomaly grid. Coordinates are latitude and</span>
-<span class="sd">        longitude in degrees. Units are in mGal.</span>
-
-<span class="sd">    Note</span>
-<span class="sd">    ----</span>
-<span class="sd">    The registration and coordinate system type of the returned</span>
-<span class="sd">    :class:`xarray.DataArray` grid can be accessed via the GMT accessors</span>
-<span class="sd">    (i.e., ``grid.gmt.registration`` and ``grid.gmt.gtype`` respectively).</span>
-<span class="sd">    However, these properties may be lost after specific grid operations (such</span>
-<span class="sd">    as slicing) and will need to be manually set before passing the grid to any</span>
-<span class="sd">    PyGMT data processing or plotting functions. Refer to</span>
-<span class="sd">    :class:`pygmt.GMTDataArrayAccessor` for detailed explanations and</span>
-<span class="sd">    workarounds.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    &gt;&gt;&gt; from pygmt.datasets import load_earth_free_air_anomaly</span>
-<span class="sd">    &gt;&gt;&gt; # load the default grid (gridline-registered 1 arc-degree grid)</span>
-<span class="sd">    &gt;&gt;&gt; grid = load_earth_free_air_anomaly()</span>
-<span class="sd">    &gt;&gt;&gt; # load the 30 arc-minutes grid with &quot;gridline&quot; registration</span>
-<span class="sd">    &gt;&gt;&gt; grid = load_earth_free_air_anomaly(</span>
-<span class="sd">    ...     resolution=&quot;30m&quot;, registration=&quot;gridline&quot;</span>
-<span class="sd">    ... )</span>
-<span class="sd">    &gt;&gt;&gt; # load high-resolution (5 arc-minutes) grid for a specific region</span>
-<span class="sd">    &gt;&gt;&gt; grid = load_earth_free_air_anomaly(</span>
-<span class="sd">    ...     resolution=&quot;05m&quot;,</span>
-<span class="sd">    ...     region=[120, 160, 30, 60],</span>
-<span class="sd">    ...     registration=&quot;gridline&quot;,</span>
-<span class="sd">    ... )</span>
+<span class="sd">    xshift : str</span>
+<span class="sd">        Shift plot origin in x direction.</span>
+<span class="sd">    yshift : str</span>
+<span class="sd">        Shift plot origin in y direction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">_load_remote_dataset</span><span class="p">(</span>
-        <span class="n">dataset_name</span><span class="o">=</span><span class="s2">&quot;earth_free_air_anomaly&quot;</span><span class="p">,</span>
-        <span class="n">dataset_prefix</span><span class="o">=</span><span class="s2">&quot;earth_faa_&quot;</span><span class="p">,</span>
-        <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
-        <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
-        <span class="n">registration</span><span class="o">=</span><span class="n">registration</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">grid</span></div>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span><span class="p">()</span>  <span class="c1"># pylint: disable=protected-access</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-T&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">xshift</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;-X</span><span class="si">{</span><span class="n">xshift</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">yshift</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;-Y</span><span class="si">{</span><span class="n">yshift</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">lib</span><span class="p">:</span>
+        <span class="n">lib</span><span class="o">.</span><span class="n">call_module</span><span class="p">(</span><span class="n">module</span><span class="o">=</span><span class="s2">&quot;plot&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
 </pre></div>
 
            </div>

@@ -212,7 +212,7 @@ graytone will result in most of the image being very dark gray, with
 the mountain being almost white. <a class="reference internal" href="#pygmt.grdhisteq.compute_bins" title="pygmt.grdhisteq.compute_bins"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pygmt.grdhisteq.compute_bins</span></code></a>
 can provide a list of data values that divide the data range into
 divisions which have an equal area in the image [Default is 16 if
-<code class="docutils literal notranslate"><span class="pre">divisions</span></code> is not set]. The <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> or ASCII file
+<code class="docutils literal notranslate"><span class="pre">divisions</span></code> is not set]. The <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> or ASCII file
 output can be used to make a colormap with <a class="reference internal" href="pygmt.makecpt.html#pygmt.makecpt" title="pygmt.makecpt"><code class="xref py py-func docutils literal notranslate"><span class="pre">pygmt.makecpt</span></code></a> and an
 image with <a class="reference internal" href="pygmt.Figure.grdimage.html#pygmt.Figure.grdimage" title="pygmt.Figure.grdimage"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pygmt.Figure.grdimage</span></code></a> that has all levels of gray
 occurring equally.</p>
@@ -228,7 +228,7 @@ histogram equalization in.</p></li>
 <blockquote>
 <div><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> - <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code>- <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code>- <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">file</span></code> - ASCII file (requires <code class="docutils literal notranslate"><span class="pre">outfile</span></code>)</p></li>
 </ul>
 </div></blockquote>
@@ -278,7 +278,7 @@ line-breaks.</p></li>
 <ul class="simple">
 <li><p>None if <code class="docutils literal notranslate"><span class="pre">outfile</span></code> is set (output will be stored in file set by
 <code class="docutils literal notranslate"><span class="pre">outfile</span></code>)</p></li>
-<li><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> if
+<li><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> if
 <code class="docutils literal notranslate"><span class="pre">outfile</span></code> is not set (depends on <code class="docutils literal notranslate"><span class="pre">output_type</span></code>)</p></li>
 </ul>
 </p>
@@ -336,9 +336,9 @@ grids to account for node area varying with latitude.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2017-2023, The PyGMT Developers.
-      <span class="commit">Revision <code><a href="https://github.com/GenericMappingTools/pygmt/commit/1d8944fc">1d8944fc</a></code>.
+      <span class="commit">Revision <code><a href="https://github.com/GenericMappingTools/pygmt/commit/ba5cb778">ba5cb778</a></code>.
       </span>
-      <span class="lastupdated">Last updated on Mar 31, 2023.
+      <span class="lastupdated">Last updated on Apr 09, 2023.
       </span></p>
   </div>
 
