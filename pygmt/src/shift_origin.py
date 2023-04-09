@@ -3,8 +3,19 @@ shift_origin - Shift plot origin in x and/or y directions.
 """
 
 from pygmt.clib import Session
+from contextlib import contextmanager
+
+def managed_resource(*args, **kwds):
+    # Code to acquire resource, e.g.:
+    resource = acquire_resource(*args, **kwds)
+    try:
+        yield resource
+    finally:
+        # Code to release resource, e.g.:
+        release_resource(resource)
 
 
+@contextmanager
 def shift_origin(self, xshift=None, yshift=None):
     """
     Shift plot origin in x and/or y directions.
@@ -30,11 +41,19 @@ def shift_origin(self, xshift=None, yshift=None):
         Shift plot origin in y direction.
     """
     self._preprocess()  # pylint: disable=protected-access
-    args = ["-T"]
-    if xshift:
-        args.append(f"-X{xshift}")
-    if yshift:
-        args.append(f"-Y{yshift}")
-
-    with Session() as lib:
-        lib.call_module(module="plot", args=" ".join(args))
+    try:
+        args = ["-T"]
+        if xshift:
+            args.append(f"-X{xshift}")
+        if yshift:
+            args.append(f"-Y{yshift}")
+        with Session() as lib:
+            lib.call_module(module="plot", args=" ".join(args))
+    finally:
+        args = ["-T"]
+        if xshift:
+            args.append(f"-X-{xshift}")
+        if yshift:
+            args.append(f"-Y-{yshift}")
+        with Session() as lib:
+            lib.call_module(module="plot", args=" ".join(args))
