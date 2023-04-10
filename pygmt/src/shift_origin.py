@@ -2,17 +2,63 @@
 shift_origin - Shift plot origin in x and/or y directions.
 """
 
-from pygmt.clib import Session
 from contextlib import contextmanager
 
-def managed_resource(*args, **kwds):
-    # Code to acquire resource, e.g.:
-    resource = acquire_resource(*args, **kwds)
-    try:
-        yield resource
-    finally:
-        # Code to release resource, e.g.:
-        release_resource(resource)
+from pygmt.clib import Session
+from pygmt.exceptions import GMTInvalidInput
+
+
+def _opposite_shift(shift):
+    """
+    Return the opposite value for a shift.
+
+    Parameters
+    ----------
+    shift : int or float or str
+        A shift value.
+
+    Examples
+    --------
+    >>> _opposite_shift(5)
+    -5.0
+    >>> _opposite_shift(-5)
+    5.0
+    >>> _opposite_shift("5")
+    '-5.0'
+    >>> _opposite_shift("-5")
+    '5.0'
+    >>> _opposite_shift("5c")
+    '-5c'
+    >>> _opposite_shift("-5c")
+    '5c'
+    >>> _opposite_shift("h+5c")
+    '-h-5c'
+    >>> _opposite_shift("h-5c")
+    '-h+5c'
+    >>> _opposite_shift("h/3+2c")
+    '-h/3-2c'
+    >>> _opposite_shift("-h/3-2c")
+    'h/3+2c'
+    >>> _opposite_shift("0.5h+2c")
+    '-0.5h-2c'
+    >>> _opposite_shift("-0.5h+2c")
+    '0.5h-2c'
+    """
+    if shift is None:
+        return None
+    if isinstance(shift, (int, float)):  # is a number
+        return -float(shift)
+    if isinstance(shift, str):  # is a string
+        try:
+            return str(-float(shift))  # the string is a number
+        except ValueError:
+            if shift.startswith("-"):
+                shift = shift[1:]
+            elif not shift.startswith("+"):
+                shift = "+" + shift
+            return shift.replace("+", "#").replace("-", "+").replace("#", "-")
+    else:
+        raise GMTInvalidInput(f"'{shift}' is not a valid shift.")
 
 
 @contextmanager
@@ -41,19 +87,24 @@ def shift_origin(self, xshift=None, yshift=None):
         Shift plot origin in y direction.
     """
     self._preprocess()  # pylint: disable=protected-access
+    old_xshift = _opposite_shift(xshift)
+    old_yshift = _opposite_shift(xshift)
+
     try:
+        print("In try")
         args = ["-T"]
         if xshift:
             args.append(f"-X{xshift}")
         if yshift:
             args.append(f"-Y{yshift}")
         with Session() as lib:
-            lib.call_module(module="plot", args=" ".join(args))
+            yield lib.call_module(module="plot", args=" ".join(args))
     finally:
+        print("In finally")
         args = ["-T"]
-        if xshift:
-            args.append(f"-X-{xshift}")
-        if yshift:
-            args.append(f"-Y-{yshift}")
+        if old_xshift:
+            args.append(f"-X{old_xshift}")
+        if old_yshift:
+            args.append(f"-Y{old_yshift}")
         with Session() as lib:
             lib.call_module(module="plot", args=" ".join(args))
