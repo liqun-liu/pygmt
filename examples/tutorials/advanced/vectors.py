@@ -385,7 +385,7 @@ fig.show()
 # multiple vectors can be plotted in a chain where the endpoint
 # of one is the starting point of another. This can be done
 # by adding the coordinate lists together to create this structure:
-# ``[[start_latitude, start_longitude, end_latitude, end_longitude]]``.
+# ``[[start_longitude,start_latitude,end_longitude,end_latitude]]``.
 # Each list within the 2-D list contains the start and end information
 # for each vector.
 
