@@ -494,6 +494,26 @@ class Session:
 
         return value.value.decode()
 
+    def get_common(self, option):
+        c_get_common = self.get_libgmt_func(
+            "GMT_Get_Common",
+            argtypes=[ctp.c_void_p, ctp.c_uint, ctp.POINTER(ctp.c_double)],
+            restype=ctp.c_int,
+        )
+        value = np.empty(6)
+        status = c_get_common(
+            self.session_pointer,
+            ord(option),
+            value.ctypes.data_as(ctp.POINTER(ctp.c_double)),
+        )
+
+        if status == -1:
+            raise GMTCLibError(
+                f"Error getting value for option '{option}' (error code {status})."
+            )
+
+        return value
+
     def call_module(self, module, args):
         """
         Call a GMT module with the given arguments.
